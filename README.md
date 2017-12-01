@@ -39,7 +39,7 @@
 - the user will be able to click on the recipe to bring up a full page which details the recipe.
 - the user can choose to leave the site after this, go back to their search or they can create an account and save the recipes to a "recipe box".
 
-###Future deliverables:
+### Future deliverables:
 
 - add the functionality for users to have multiple recipe boxes
 - for the user to add their own recipes to their recipe boxes 
@@ -49,7 +49,7 @@
 
 ## Data
 
-###User 
+### User 
 The user may or may not have an account to login and store their recipes.  If they require an account they will need to register by providing their name, a valid email address and password. 
 
 The user model:
@@ -62,10 +62,10 @@ The user model:
  	recipebox_id: foreign_key
  			
 
-###Ingredients
+### Ingredients
 The ingredient will be inputted by the user through the UI and an api call will be sent to the api using the ingredients as query parameters.  
 
-###Recipes
+### Recipes
 Recipes will be provided by a 3rd party recipe api (see above).  The data will be extracted from the data sent from the api and then rendered on the UI. If the user would like to save the object, they need to be authenticated and then they can save to their recipe box
 
 The recipe model:
