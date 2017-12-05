@@ -1,8 +1,10 @@
+require('dotenv').config();
+
 module.exports = {
   client: 'pg',
   connection: process.env.DATABASE_URL || {
-    user: 'postgres', // or other user if you made one
-    password: 'postgres',
-    database: 'recipe_finder'
+    user: process.env.DB_USER,
+    password: process.env.DB_PASS,
+    database: process.env.DB_NAME
   }
 };
