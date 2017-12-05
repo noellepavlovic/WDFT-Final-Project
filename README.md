@@ -15,7 +15,7 @@
 
 ### First Party Tools
 - React for building out the UI, along with a UI framework such as Bootstrap or Materialize
-- Node ane express to communication between Recipe API and server, and the server and the UI.
+- Node and express to communication between Recipe API and server, and the server and the UI.
 - nodejs, Passport and postgres for authentication
 - postgres for database with Knex and bookshelf for ORM
 - token based authorization using JWTs and Postgres
