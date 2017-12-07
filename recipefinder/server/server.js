@@ -40,7 +40,6 @@ app.get('/auth/google/callback',
 	}),
 	(req, res) => {
 		console.log("SUCCESS")
-		console.log(req.headers);
 		res.setHeader('cookie', req.headers.cookie)
 		res.redirect('http://localhost:3000')
 	});
@@ -56,19 +55,34 @@ app.get('/account', ensureAuthenticated, (req, res) => {
 	res.send(req.user)	
 })
 
+app.get('/', (req, res) => {
+	axios.get('http://api.yummly.com/v1/api/recipes', {
+		params: {
+            _app_id: '56782cdc',
+			_app_key: '5ad566c9fd9d2d9a18d195bbb75f903e',
+			maxResult: '21'
+		}
+		
+		})
+		.then(response => {
+			res.send(response.data)
+})
+})
+
 app.post('/search', (req, res) => {
-    axios.get('http://api.yummly.com/v1/api/recipes', {
+	let search = req.body.search
+	axios.get('http://api.yummly.com/v1/api/recipes', {
         params: {
             _app_id: '56782cdc',
 			_app_key: '5ad566c9fd9d2d9a18d195bbb75f903e',
-			your_search_parameters: encodeURI(req.body.your_search_parameters)
+			q: search,
+			maxResult: '27'
 		}
 	})
 	.then(response=> {
-		console.log(response)
 		res.send(response.data)
-    }) 
-	  })
+	}) 
+	})
 	  
 app.get('/getRecipe/:recipeid', (req, res) => {
 	axios.get(`http://api.yummly.com/v1/api/recipe/${req.params.recipeid}`, {
@@ -78,10 +92,9 @@ app.get('/getRecipe/:recipeid', (req, res) => {
 		}
 	})
 	.then(response=> {
-		console.log(response)
 		res.send(response.data)
-	}) 
-		})
+		}) 
+	})
 
 
 app.listen(8080, () => {
