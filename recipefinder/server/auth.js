@@ -1,8 +1,5 @@
 const User = require('./db/models/Users');
-const Recipebox = require('./db/models/Recipeboxes')
-const knexConfig = require('../knexfile');
-const knex = require('knex')(knexConfig);
-const bookshelf = require('bookshelf')(knex);
+const Recipebox = require('./db/models/Recipeboxes');
 
 var passport = require('passport');
 var GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
@@ -23,31 +20,31 @@ passport.use(new GoogleStrategy({
 	callbackURL: "http://localhost:8080/auth/google/callback"
 },
 	(accessToken, refreshToken, profile, done) => {
-		console.log("this is the email")
-		console.log(profile.emails[0].value)
-		User.where({ id: profile.id })
+		User.where({ userid: profile.id })
 			.fetch()
 			.then(res => {
+				
 				if (!res) {
 					const newUser = new User({
-						'id': bigInt(profile.id),
-						'email': profile.emails,
+						'userid': profile.id,
+						'email': profile.emails[0].value,
 						'firstname': profile.name.givenName,
-						'surname': profile.name.familyName,
+						'lastname': profile.name.familyName,
 					});
+
 					newUser.save().then(user => {
+						const newRecipebox = new Recipebox({
+							'recipeboxName': (`${user.attributes.firstname}'s Recipe Box`),
+							'user_id': user.attributes.userid
+						});
+						newRecipebox.save();
 						return done(null, user)
 					})
-
-					const newRecipebox = new Recipebox({
-						'recipeboxName': (`${user.firstname}'s Recipe Box`),
-						'user_id': user.id
-					});
-					newRecipebox.save();
 
 				} else {
 					return done(null, res)
 				}
+
 			}), function (err, user) {
 				return done(err, user);
 			};

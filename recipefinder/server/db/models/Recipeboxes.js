@@ -12,4 +12,4 @@ const Recipebox = bookshelf.Model.extend({
     }
 })
 
-module.export = Recipebox;
+module.exports = Recipebox;
