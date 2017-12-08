@@ -96,6 +96,25 @@ app.get('/getRecipe/:recipeid', (req, res) => {
 		}) 
 	})
 
+	app.post('/recipes', ensureAuthenticated, (req, res) => {
+		
+		const newRecipe = new Recipe({
+			id: req.body.id,
+			recipeName: req.body.recipeName,
+			ingredients: req.body.ingredientLines,
+			totalTime: req.body.totalTime,
+			category: req.body.category,
+			servings: req.body.numberOfSerivngs,
+			calories: req.body.calories,
+		})
+		
+		newRecipe.save().then(recipe => {
+			const newRecipes_recipeboxes = new Recipe_recipeboxes ({
+			recipe_id: recipe.id,
+			recipebox_id: this.body.recipebox
+		})
+		
+		newRecipes_recipeboxes.save()	
 
 app.listen(8080, () => {
 	console.log('Listening on port 8080');

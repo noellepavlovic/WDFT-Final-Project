@@ -1,7 +1,15 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
+import {Route} from 'react-router-dom'
 import axios from 'axios';
 import './App.css';
+
+import Header from './components/Header'
+import Navbar from './components/Navbar'
+import Search from './components/Search'
+import Sidebar from './components/Sidebar'
+import Recipes from './components/Recipes'
+import RecipeDetails from './components/RecipeDetails'
+
 
 axios.defaults.withCredentials = true;
 
@@ -11,17 +19,25 @@ class App extends Component {
 		super()
 		this.state = {
 			user: false,
+			recipes: [],
+			recipe: []
 		}
 	}
 
 	componentDidMount() {
 		this.verifyAuthenticated();
+		axios.get('http://localhost:8080/')
+		.then((response) => {
+			let __recipes = response.data.matches
+			this.setState({
+				recipes: __recipes
+			})
+		})
 	}
 
 	verifyAuthenticated = () => {
 		axios.get('http://localhost:8080/account')
 			.then((res) => {
-				console.log(res)
 				if (res.status !== 401) {
 					this.setState({
 						user: res.data
@@ -34,37 +50,47 @@ class App extends Component {
 	}
 
 	search = (search) => {
-		axios.post('http://localhost:8080/search', { search: search })
+			axios.post('http://localhost:8080/search', {search: search})
 			.then((response) => {
-				let recipes = response
+				let __recipes = response.data.matches
+				this.setState({
+					recipes: __recipes
+				})
 			})
 	}
 
 	getRecipe = (recipeId) => {
 		axios.get(`http://localhost:8080/getRecipe/${recipeId}`)
 			.then((response) => {
-				let recipe = response
+				console.log(response)
+				let __recipe = response
+				this.setState({
+					recipe: __recipe
 			})
+		})
+		
+		console.log("this is the recipe")
+		console.log(this.state.recipe)
 	}
-
 
 
 	render() {
 		return (
-			<div className="App">
-				<header className="App-header">
-					<img src={logo} className="App-logo" alt="logo" />
-					<h1 className="App-title">Welcome to React</h1>
+			<div className="container">
+				<Header />
+				<Navbar />
+				<Search search={(search) => this.search(search)} />
+				<div className="row fullLength">
 
-				</header>
-				<p className="App-intro">
-
-					<a href="http://localhost:8080/auth/google"><button>Login</button></a>
-					To get started, edit <code>src/App.js</code> and save to reload.
-        </p>
+					<div className="col s12 main z-depth-1">
+						<Route exact path="/" render={() => <Recipes recipes={this.state.recipes} />} />
+						<Route path="/:recipeId" render={(props) => <RecipeDetails recipe={this.state.recipe} getRecipe={(recipeId) => this.getRecipe(recipeId)}{...props} />} />
+					</div>
+				</div>
 			</div>
 		);
 	}
 }
+
 
 export default App;

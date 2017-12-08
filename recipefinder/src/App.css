@@ -1,28 +1,79 @@
-.App {
-  text-align: center;
-}
 
-.App-logo {
-  animation: App-logo-spin infinite 20s linear;
-  height: 80px;
-}
-
-.App-header {
+.header {
   background-color: #222;
   height: 150px;
-  padding: 20px;
   color: white;
 }
 
-.App-title {
-  font-size: 1.5em;
+.container {
+  width: 100%;
+  min-height: 100vh; 
 }
 
-.App-intro {
-  font-size: large;
+.row {
+  margin-bottom: 0;
 }
 
-@keyframes App-logo-spin {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
+.main,
+.sidebar {
+  min-height: 100%;
+}
+
+.fullLength {
+  min-height: 100%;
+}
+
+input[type="text"]:not(.browser-default){
+  padding-left: 20px;
+  border-bottom: 0px;
+  margin-bottom: 10px;
+  font-size: 1.7em;
+}
+
+.card {
+  height: 300px;
+  overflow: hidden;
+}
+
+.card-content {
+  font-size: 0.85em;
+}
+
+.search {
+  background-color: white;
+}
+
+.main {
+  background-color: rgb(224, 221, 221);
+  padding-top: 10px;
+  padding-left: 20px;
+  min-height: 100%;
+}
+
+nav,
+.nav-wrapper {
+  background-color: grey;
+  max-height: 60px;
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+img {
+  border-radius: 5px;
+}
+
+.footer {
+  background-color: grey;
+}
+
+.recipe {
+  padding-left: 20px;
+}
+
+.detImg {
+  margin: 20px;
+}
+
+.material-icons {
+  color: rgb(112, 173, 173);
 }

@@ -1,7 +1,7 @@
 
 exports.up = (knex, Promise) => {
     return knex.schema.createTableIfNotExists('recipes', (table) => {
-      table.increments('id').primary();
+      table.string('id').primary();
       table.string('recipeName').notNullable();
       table.specificType('ingredients','text[]').notNullable();
       table.string('category').notNullable();
