@@ -103,19 +103,20 @@ app.post('/recipe', ensureAuthenticated, (req, res) => {
 	let recipeid = req.body.recipe.data.id;
 	let recipeboxid;
 	let saverecipe;
+	let found = false;
 
 	Recipebox.where({ 'user_id': userid })
 		.fetch()
 		.then(recipebox => {
 			recipeboxid = recipebox.id
-		
+
 			Recipe.where({ 'id': recipeid })
 				.fetch()
 				.then(recipe => {
 					saverecipe = recipe
-				
+
 					if (!saverecipe) {
-						
+
 						const newRecipe = new Recipe({
 							id: req.body.recipe.data.id,
 							recipeName: req.body.recipe.data.name,
@@ -136,22 +137,30 @@ app.post('/recipe', ensureAuthenticated, (req, res) => {
 							console.log("try to save")
 							console.log(recipeboxid)
 							newRecipe_Recipebox.save(null, { method: 'insert' })
-						
+
 						})
 					} else {
-						const newRecipe_Recipebox = new Recipe_Recipebox({
-							recipe_id: saverecipe.id,
-							recipebox_id: recipeboxid
-						})
-						console.log('else'+recipeboxid) 
 						
-						newRecipe_Recipebox.save(null, { method: 'insert' })
-					}
+						Recipe_Recipebox.where(({ 'recipe_id': saverecipe.id }) && ({ 'recipebox_id': recipeboxid }))
+							.fetch()
+							.then(recipe_recipebox => {
+								found = recipe_recipebox
+								if (!found) {
+									const newRecipe_Recipebox = new Recipe_Recipebox({
+										recipe_id: saverecipe.id,
+										recipebox_id: recipeboxid
+									})
 
-		//	console.log(saverecipe.id)
-		//	console.log(recipeboxid)
+									newRecipe_Recipebox.save(null, { method: 'insert' })
+								} else {
+									return;
+								}
+							})
+						console.log('else' + recipeboxid)
+
+					}
+				})
 		})
-	})
 })
 
 
