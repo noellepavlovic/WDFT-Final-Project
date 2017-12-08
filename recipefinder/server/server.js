@@ -11,6 +11,7 @@ const auth = require('./auth');
 const User = require('./db/models/Users');
 const Recipe = require('./db/models/Recipes');
 const Recipebox = require('./db/models/Recipeboxes');
+const Recipe_Recipebox = require ('./db/models/Recipes_Recipeboxes')
 
 app.use(express.static(__dirname + '/public'));
 app.use(bodyParser());
@@ -60,7 +61,7 @@ app.get('/', (req, res) => {
 		params: {
             _app_id: '56782cdc',
 			_app_key: '5ad566c9fd9d2d9a18d195bbb75f903e',
-			maxResult: '21'
+			maxResult: '30'
 		}
 		
 		})
@@ -76,7 +77,7 @@ app.post('/search', (req, res) => {
             _app_id: '56782cdc',
 			_app_key: '5ad566c9fd9d2d9a18d195bbb75f903e',
 			q: search,
-			maxResult: '27'
+			maxResult: '30'
 		}
 	})
 	.then(response=> {
@@ -96,25 +97,63 @@ app.get('/getRecipe/:recipeid', (req, res) => {
 		}) 
 	})
 
-	app.post('/recipes', ensureAuthenticated, (req, res) => {
+app.post('/recipe', ensureAuthenticated, (req, res) => {
+
+	let userid = req.body.user.userid;
+	let recipeid = req.body.recipe.data.id;
+	let recipeboxid;
+	let saverecipe;
+
+	Recipebox.where({ 'user_id': userid })
+		.fetch()
+		.then(recipebox => {
+			recipeboxid = recipebox.id
 		
-		const newRecipe = new Recipe({
-			id: req.body.id,
-			recipeName: req.body.recipeName,
-			ingredients: req.body.ingredientLines,
-			totalTime: req.body.totalTime,
-			category: req.body.category,
-			servings: req.body.numberOfSerivngs,
-			calories: req.body.calories,
+			Recipe.where({ 'id': recipeid })
+				.fetch()
+				.then(recipe => {
+					saverecipe = recipe
+				
+					if (!saverecipe) {
+						
+						const newRecipe = new Recipe({
+							id: req.body.recipe.data.id,
+							recipeName: req.body.recipe.data.name,
+							ingredients: req.body.recipe.data.ingredientLines,
+							totalTime: req.body.recipe.data.totalTime,
+							category: req.body.recipe.data.attributes.course["0"],
+							servings: req.body.recipe.data.numberOfSerivngs,
+							calories: req.body.recipe.data.nutritionEstimates["0"].value,
+							recipeSrc: req.body.recipe.data.source.sourceRecipeUrl
+						})
+
+						newRecipe.save(null, { method: 'insert' }).then(recipe => {
+							saverecipe = recipe
+							const newRecipe_Recipebox = new Recipe_Recipebox({
+								recipe_id: saverecipe.id,
+								recipebox_id: recipeboxid
+							})
+							console.log("try to save")
+							console.log(recipeboxid)
+							newRecipe_Recipebox.save(null, { method: 'insert' })
+						
+						})
+					} else {
+						const newRecipe_Recipebox = new Recipe_Recipebox({
+							recipe_id: saverecipe.id,
+							recipebox_id: recipeboxid
+						})
+						console.log('else'+recipeboxid) 
+						
+						newRecipe_Recipebox.save(null, { method: 'insert' })
+					}
+
+		//	console.log(saverecipe.id)
+		//	console.log(recipeboxid)
 		})
-		
-		newRecipe.save().then(recipe => {
-			const newRecipes_recipeboxes = new Recipe_recipeboxes ({
-			recipe_id: recipe.id,
-			recipebox_id: this.body.recipebox
-		})
-		
-		newRecipes_recipeboxes.save()	
+	})
+})
+
 
 app.listen(8080, () => {
 	console.log('Listening on port 8080');

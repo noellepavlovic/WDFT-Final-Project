@@ -18,9 +18,9 @@ class Recipes extends Component {
         return (
             <div>
                 <div className="col s8 recipe">
-                    <h5 className="valign-wrapper">{this.props.recipe.data.name}  <i class="small material-icons">add_circle</i></h5>
+                    <h5 className="valign-wrapper">{this.props.recipe.data.name}  <i class="small material-icons"><button onClick={() => this.props.saveRecipe()} >add_circle</button></i></h5>
                     <div><b>Category:</b> {this.props.recipe.data.attributes.course['0']}  <b>Time to Prepare:</b> {this.props.recipe.data.totalTime}</div>
-                    <div><b>Servings:</b> {this.props.recipe.data.numberOfServings} <b>Calories:</b>   </div>
+                    <div><b>Servings:</b> {this.props.recipe.data.numberOfServings} <b>Calories: {this.props.recipe.data.nutritionEstimates["0"].value}</b>   </div>
                     {this.props.recipe.data.ingredientLines.map((item, i) => <ul> {item} </ul>)}
                 </div>
                

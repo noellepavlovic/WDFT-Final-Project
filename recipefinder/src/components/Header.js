@@ -4,10 +4,11 @@ class Header extends Component {
     
     render() {
         return (
-            <div className="row">
-			<div className="col s12 header">
+            <div className="row header z-depth-1">
+			
+            <img className="banner" src="../img/banner3.png" alt="What's for dinner" />
 				
-			</div>
+			
 			</div>
         )
     }

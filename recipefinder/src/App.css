@@ -1,12 +1,12 @@
 
 .header {
-  background-color: #222;
-  height: 150px;
-  color: white;
+  background-color: rgb(255, 255, 255);
+  color: rgb(10, 2, 2);
+  padding-left: 0px;
 }
 
 .container {
-  width: 100%;
+  width: 100vw;
   min-height: 100vh; 
 }
 
@@ -24,7 +24,7 @@
 }
 
 input[type="text"]:not(.browser-default){
-  padding-left: 20px;
+  width: 100%;
   border-bottom: 0px;
   margin-bottom: 10px;
   font-size: 1.7em;
@@ -37,6 +37,7 @@ input[type="text"]:not(.browser-default){
 
 .card-content {
   font-size: 0.85em;
+  color: rgb(64, 189, 189);
 }
 
 .search {
@@ -52,9 +53,9 @@ input[type="text"]:not(.browser-default){
 
 nav,
 .nav-wrapper {
-  background-color: grey;
+  background-color: rgb(112, 173, 173);
   max-height: 60px;
-  padding-left: 10px;
+  padding-left: 7px;
   padding-right: 10px;
 }
 
@@ -68,6 +69,7 @@ img {
 
 .recipe {
   padding-left: 20px;
+  min-height: 50vh;
 }
 
 .detImg {
@@ -76,4 +78,16 @@ img {
 
 .material-icons {
   color: rgb(112, 173, 173);
+}
+
+.banner {
+  max-width: 100%;
+  margin-bottom: -6px;
+  border-radius: 0px;
+}
+button,
+button:active,
+button:visited {
+  border: 0px;
+  background-color: transparent;
 }

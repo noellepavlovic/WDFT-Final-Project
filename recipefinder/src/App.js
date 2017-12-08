@@ -68,10 +68,20 @@ class App extends Component {
 					recipe: __recipe
 			})
 		})
-		
 		console.log("this is the recipe")
 		console.log(this.state.recipe)
 	}
+
+	saveRecipe = () => {
+		let recipe = this.state.recipe
+		
+		axios.post('http://localhost:8080/recipe', {recipe: recipe, user: this.state.user})
+			.then((response) => {
+				console.log("Recipe Saved!")
+			})
+
+	}
+		
 
 
 	render() {
@@ -84,7 +94,7 @@ class App extends Component {
 
 					<div className="col s12 main z-depth-1">
 						<Route exact path="/" render={() => <Recipes recipes={this.state.recipes} />} />
-						<Route path="/:recipeId" render={(props) => <RecipeDetails recipe={this.state.recipe} getRecipe={(recipeId) => this.getRecipe(recipeId)}{...props} />} />
+						<Route path="/:recipeId" render={(props) => <RecipeDetails recipe={this.state.recipe} saveRecipe={() => this.saveRecipe()} getRecipe={(recipeId) => this.getRecipe(recipeId)} {...props} />} />
 					</div>
 				</div>
 			</div>

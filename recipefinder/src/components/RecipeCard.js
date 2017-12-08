@@ -12,12 +12,14 @@ class RecipeCard extends Component {
               <div class="card">
                 <div class="card-image">
                   <img src={this.props.imgSrc} />
-                  
-                  <a class="btn-floating halfway-fab waves-effect waves-light red"><i class="material-icons">add</i></a>
-                </div>
+                 </div>
                 
-                <Link to={`/${this.props.id}`}><div class="card-content">{this.props.title}
-                    <p>{this.props.recSrc}</p></div></Link>
+                <Link to={`/${this.props.id}`}>
+                    <div class="card-content">
+                        <div className="center-align"><b>{this.props.title}</b></div>
+                        <div className="center-align"><p>{this.props.recSrc}</p></div>
+                    </div>
+                </Link>
                 
               </div>
               

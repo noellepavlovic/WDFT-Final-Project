@@ -3,7 +3,7 @@ exports.up = function(knex, Promise) {
 
     return knex.schema.createTableIfNotExists('recipes_recipeboxes', (table) => {
         table.increments().primary();
-        table.integer('recipe_id').references('recipes.id');
+        table.string('recipe_id').references('recipes.id');
         table.integer('recipebox_id').references('recipeboxes.id');
       });
     };
