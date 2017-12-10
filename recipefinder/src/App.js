@@ -1,15 +1,15 @@
 import React, { Component } from 'react';
-import {Route} from 'react-router-dom'
+import {withRouter} from "react-router-dom";
+import { Route } from 'react-router-dom';
 import axios from 'axios';
+import swal from 'sweetalert';
 import './App.css';
 
 import Header from './components/Header'
 import Navbar from './components/Navbar'
 import Search from './components/Search'
-import Sidebar from './components/Sidebar'
 import Recipes from './components/Recipes'
 import RecipeDetails from './components/RecipeDetails'
-
 
 axios.defaults.withCredentials = true;
 
@@ -37,10 +37,11 @@ class App extends Component {
 
 	verifyAuthenticated = () => {
 		axios.get('http://localhost:8080/account')
-			.then((res) => {
-				if (res.status !== 401) {
+			.then((response) => {
+				if (response.status !== 401) {
 					this.setState({
-						user: res.data
+						user: response.data
+						
 					})
 				}
 			})
@@ -56,6 +57,7 @@ class App extends Component {
 				this.setState({
 					recipes: __recipes
 				})
+				this.props.history.push('/');
 			})
 	}
 
@@ -77,24 +79,48 @@ class App extends Component {
 		
 		axios.post('http://localhost:8080/recipe', {recipe: recipe, user: this.state.user})
 			.then((response) => {
-				console.log("Recipe Saved!")
+				swal("Recipe Saved!")
 			})
-
 	}
-		
 
+	getRecipebox = () => {
+		console.log("in getRecipebox")
+		axios.get('http://localhost:8080/recipebox')
+		.then((response) => {
+			console.log(response.data)
+			let __recipes = response.data
+			this.setState({
+				recipes: __recipes
+			})
+			this.props.history.push('/');
+			console.log("in getRecipebox2")
+		})
+	}
 
+	logout = () => {
+		axios.get('http://localhost:8080/logout')
+		.then((response) => {
+			this.setState({
+				user: false
+			})
+			swal("You successfully logged out!")
+		})
+	}
+
+	
 	render() {
+		console.log(this.state.user)
 		return (
 			<div className="container">
 				<Header />
-				<Navbar />
+				<Navbar user={this.state.user} logout={() => this.logout()} getRecipebox={() => this.getRecipebox()}/>
 				<Search search={(search) => this.search(search)} />
 				<div className="row fullLength">
 
-					<div className="col s12 main z-depth-1">
+					<div className="col s12 main z-depth-2">
 						<Route exact path="/" render={() => <Recipes recipes={this.state.recipes} />} />
-						<Route path="/:recipeId" render={(props) => <RecipeDetails recipe={this.state.recipe} saveRecipe={() => this.saveRecipe()} getRecipe={(recipeId) => this.getRecipe(recipeId)} {...props} />} />
+						<Route path="/:recipeId" render={(props) => <RecipeDetails user={this.state.user} recipe={this.state.recipe} 
+							saveRecipe={() => this.saveRecipe()} getRecipe={(recipeId) => this.getRecipe(recipeId)} {...props} />} />
 					</div>
 				</div>
 			</div>
@@ -103,4 +129,4 @@ class App extends Component {
 }
 
 
-export default App;
+export default withRouter(App);

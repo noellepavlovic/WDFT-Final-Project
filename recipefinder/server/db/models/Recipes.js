@@ -3,10 +3,7 @@ const knex = require('knex')(knexConfig);
 const bookshelf = require('bookshelf')(knex);
 
 const Recipe = bookshelf.Model.extend({
-    tableName: 'recipes',
-    recipebox: () => {
-        return this.belongsTo(Recipebox)
-    }
+    tableName: 'recipes'
 })
 
 module.exports = Recipe;

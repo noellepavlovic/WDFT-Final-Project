@@ -1,3 +1,4 @@
+
 require('dotenv').config();
 const express = require('express');
 const app = express();
@@ -47,7 +48,7 @@ app.get('/auth/google/callback',
 
 app.get('/logout', (req, res) => {
 	req.logout();
-	res.redirect('http://localhost:3000');
+	res.send();
 	console.log('LOGGED OUT!')
 });
 
@@ -83,7 +84,7 @@ app.post('/search', (req, res) => {
 	.then(response=> {
 		res.send(response.data)
 	}) 
-	})
+})
 	  
 app.get('/getRecipe/:recipeid', (req, res) => {
 	axios.get(`http://api.yummly.com/v1/api/recipe/${req.params.recipeid}`, {
@@ -97,9 +98,35 @@ app.get('/getRecipe/:recipeid', (req, res) => {
 		}) 
 	})
 
+app.get('/recipebox', ensureAuthenticated, (req, res) => {
+	
+	Recipebox.where({'user_id': req.user.id })
+		.fetch()
+		.then(recipebox => {
+			Recipe_Recipebox.where({'recipebox_id': recipebox.attributes.id})
+			.fetchAll()
+			.then(
+				recipebox_recipes => {
+					
+					const recipe_ids = recipebox_recipes.models.map(recipe => recipe.attributes.recipe_id)
+
+					Recipe.forge().query((qb) => {
+						qb.where('id', 'IN', recipe_ids)})
+						.fetchAll()
+						.then((reciperesults) => {
+							const recipes = reciperesults.models.map(recipe => recipe.attributes);
+							/* console.log(recipes); */
+							res.send(recipes);
+						});
+				}
+			);
+		});
+	});
+
+
 app.post('/recipe', ensureAuthenticated, (req, res) => {
 
-	let userid = req.body.user.userid;
+	let userid = req.user.id;
 	let recipeid = req.body.recipe.data.id;
 	let recipeboxid;
 	let saverecipe;
@@ -125,7 +152,9 @@ app.post('/recipe', ensureAuthenticated, (req, res) => {
 							category: req.body.recipe.data.attributes.course["0"],
 							servings: req.body.recipe.data.numberOfSerivngs,
 							calories: req.body.recipe.data.nutritionEstimates["0"].value,
-							recipeSrc: req.body.recipe.data.source.sourceRecipeUrl
+							recipeSrc: req.body.recipe.data.source.sourceRecipeUrl,
+							sourceDisplayName: req.body.recipe.data.source.sourceDisplayName,
+							imgSrc: req.body.recipe.data.images["0"].hostedLargeUrl
 						})
 
 						newRecipe.save(null, { method: 'insert' }).then(recipe => {
@@ -137,7 +166,6 @@ app.post('/recipe', ensureAuthenticated, (req, res) => {
 							console.log("try to save")
 							console.log(recipeboxid)
 							newRecipe_Recipebox.save(null, { method: 'insert' })
-
 						})
 					} else {
 						

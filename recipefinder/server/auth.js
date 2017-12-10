@@ -35,7 +35,7 @@ passport.use(new GoogleStrategy({
 					newUser.save().then(user => {
 						const newRecipebox = new Recipebox({
 							'recipeboxName': (`${user.attributes.firstname}'s Recipe Box`),
-							'user_id': user.attributes.userid
+							'user_id': user.attributes.id
 						});
 						newRecipebox.save();
 						return done(null, user)

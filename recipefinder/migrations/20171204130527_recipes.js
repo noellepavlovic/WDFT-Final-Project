@@ -9,6 +9,8 @@ exports.up = (knex, Promise) => {
       table.string('servings');
       table.string('calories');
       table.string('recipeSrc').notNullable();
+      table.string('sourceDisplayName');
+      table.string('imgSrc');
       table.timestamp('created_at').notNullable().defaultTo(knex.raw('now()'));
       table.timestamp('updated_at').notNullable().defaultTo(knex.raw('now()'));
     });

@@ -51,10 +51,10 @@ input[type="text"]:not(.browser-default){
   min-height: 100%;
 }
 
-nav,
+
 .nav-wrapper {
   background-color: rgb(112, 173, 173);
-  max-height: 60px;
+  max-height: 64px;
   padding-left: 7px;
   padding-right: 10px;
 }
@@ -90,4 +90,8 @@ button:active,
 button:visited {
   border: 0px;
   background-color: transparent;
+}
+
+.waves-effect.waves-light.btn {
+  background-color: rgb(112, 173, 173)
 }

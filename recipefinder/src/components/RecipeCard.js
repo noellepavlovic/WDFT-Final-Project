@@ -4,9 +4,12 @@ import {Link} from 'react-router-dom';
 class RecipeCard extends Component {
     
     render() {
+        console.log("from inside card")
+        console.log(this.props)
         return (
          
             
+
             <div class="col s2">
              
               <div class="card">
