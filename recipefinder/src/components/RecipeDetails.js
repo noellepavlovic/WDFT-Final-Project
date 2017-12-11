@@ -15,7 +15,7 @@ class Recipes extends Component {
         }
 
         return (
-            <div>
+            <div className="detailCard">
                 <div className="col s8 recipe">
                     <h5 className="valign-wrapper">{this.props.recipe.data.name}
                         {this.props.user

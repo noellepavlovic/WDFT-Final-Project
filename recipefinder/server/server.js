@@ -156,9 +156,6 @@ app.post('/recipe', ensureAuthenticated, (req, res) => {
 						const newRecipe = new Recipe({
 							id: req.body.recipe.data.id,
 							recipeName: req.body.recipe.data.name,
-							ingredients: req.body.recipe.data.ingredientLines,
-							totalTime: req.body.recipe.data.totalTime,
-							category: req.body.recipe.data.attributes.course["0"],
 							recipeSrc: req.body.recipe.data.source.sourceRecipeUrl,
 							sourceDisplayName: req.body.recipe.data.source.sourceDisplayName,
 							imgSrc: req.body.recipe.data.images["0"].hostedLargeUrl
