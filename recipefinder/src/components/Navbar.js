@@ -21,6 +21,6 @@ class Navbar extends Component {
         )
     }
 }
-{/* <a href="/" onClick={() => this.props.logout} */}
+
 
 export default Navbar

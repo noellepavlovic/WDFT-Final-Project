@@ -6,8 +6,6 @@ exports.up = (knex, Promise) => {
       table.specificType('ingredients','text[]').notNullable();
       table.string('category').notNullable();
       table.string('totalTime');
-      table.string('servings');
-      table.string('calories');
       table.string('recipeSrc').notNullable();
       table.string('sourceDisplayName');
       table.string('imgSrc');

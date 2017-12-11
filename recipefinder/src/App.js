@@ -77,9 +77,9 @@ class App extends Component {
 	saveRecipe = () => {
 		let recipe = this.state.recipe
 		
-		axios.post('http://localhost:8080/recipe', {recipe: recipe, user: this.state.user})
+		axios.post('http://localhost:8080/recipe', {recipe: recipe})
 			.then((response) => {
-				swal("Recipe Saved!")
+				swal(response.data.message)
 			})
 	}
 

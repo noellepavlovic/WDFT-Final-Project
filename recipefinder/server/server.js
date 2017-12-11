@@ -60,15 +60,15 @@ app.get('/account', ensureAuthenticated, (req, res) => {
 app.get('/', (req, res) => {
 	axios.get('http://api.yummly.com/v1/api/recipes', {
 		params: {
-            _app_id: '56782cdc',
+			_app_id: '56782cdc',
 			_app_key: '5ad566c9fd9d2d9a18d195bbb75f903e',
 			maxResult: '30'
 		}
-		
-		})
+
+	})
 		.then(response => {
 			res.send(response.data)
-})
+		})
 })
 
 app.post('/search', (req, res) => {
@@ -100,32 +100,36 @@ app.get('/getRecipe/:recipeid', (req, res) => {
 
 app.get('/recipebox', ensureAuthenticated, (req, res) => {
 	
-	Recipebox.where({'user_id': req.user.id })
+	Recipebox.where({ 'user_id': req.user.id })
 		.fetch()
 		.then(recipebox => {
-			Recipe_Recipebox.where({'recipebox_id': recipebox.attributes.id})
-			.fetchAll()
-			.then(
+			Recipe_Recipebox.where({ 'recipebox_id': recipebox.attributes.id })
+				.fetchAll()
+				.then(
 				recipebox_recipes => {
-					
+
 					const recipe_ids = recipebox_recipes.models.map(recipe => recipe.attributes.recipe_id)
 
 					Recipe.forge().query((qb) => {
-						qb.where('id', 'IN', recipe_ids)})
+						qb.where('id', 'IN', recipe_ids)
+					})
 						.fetchAll()
 						.then((reciperesults) => {
 							const recipes = reciperesults.models.map(recipe => recipe.attributes);
-							/* console.log(recipes); */
-							res.send(recipes);
+							if (recipes.length > 0) {
+								res.send(recipes);
+							} else {
+								res.send({ error: "Your recipebox is empty!" })
+							}
 						});
 				}
-			);
+				);
 		});
-	});
+});
+
 
 
 app.post('/recipe', ensureAuthenticated, (req, res) => {
-
 	let userid = req.user.id;
 	let recipeid = req.body.recipe.data.id;
 	let recipeboxid;
@@ -150,8 +154,6 @@ app.post('/recipe', ensureAuthenticated, (req, res) => {
 							ingredients: req.body.recipe.data.ingredientLines,
 							totalTime: req.body.recipe.data.totalTime,
 							category: req.body.recipe.data.attributes.course["0"],
-							servings: req.body.recipe.data.numberOfSerivngs,
-							calories: req.body.recipe.data.nutritionEstimates["0"].value,
 							recipeSrc: req.body.recipe.data.source.sourceRecipeUrl,
 							sourceDisplayName: req.body.recipe.data.source.sourceDisplayName,
 							imgSrc: req.body.recipe.data.images["0"].hostedLargeUrl
@@ -163,16 +165,19 @@ app.post('/recipe', ensureAuthenticated, (req, res) => {
 								recipe_id: saverecipe.id,
 								recipebox_id: recipeboxid
 							})
-							console.log("try to save")
-							console.log(recipeboxid)
+				
 							newRecipe_Recipebox.save(null, { method: 'insert' })
+							res.send({message:"Recipe saved to recipe box!"})
 						})
 					} else {
-						
-						Recipe_Recipebox.where(({ 'recipe_id': saverecipe.id }) && ({ 'recipebox_id': recipeboxid }))
+					
+						Recipe_Recipebox.where({ 'recipe_id': saverecipe.id })
+							.where({ 'recipebox_id': recipeboxid })
 							.fetch()
 							.then(recipe_recipebox => {
+
 								found = recipe_recipebox
+								
 								if (!found) {
 									const newRecipe_Recipebox = new Recipe_Recipebox({
 										recipe_id: saverecipe.id,
@@ -180,12 +185,12 @@ app.post('/recipe', ensureAuthenticated, (req, res) => {
 									})
 
 									newRecipe_Recipebox.save(null, { method: 'insert' })
+									res.send({message:"Recipe saved to your recipe box!"})
+
 								} else {
-									return;
+									res.send({message:"Recipe is already in your recipe box"})
 								}
 							})
-						console.log('else' + recipeboxid)
-
 					}
 				})
 		})
