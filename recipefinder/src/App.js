@@ -53,11 +53,15 @@ class App extends Component {
 	search = (search) => {
 			axios.post('http://localhost:8080/search', {search: search})
 			.then((response) => {
+				if(response.data.message){
+					swal(response.data.message)
+				} else {
 				let __recipes = response.data.matches
 				this.setState({
 					recipes: __recipes
 				})
 				this.props.history.push('/');
+				}
 			})
 	}
 

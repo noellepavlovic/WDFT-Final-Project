@@ -81,9 +81,14 @@ app.post('/search', (req, res) => {
 			maxResult: '30'
 		}
 	})
-	.then(response=> {
+	.then(response=> {	
+		if (response.data.matches.length === 0) {
+			res.send({message: "Your search returned no results"})
+		} else {
 		res.send(response.data)
+		}
 	}) 
+	
 })
 	  
 app.get('/getRecipe/:recipeid', (req, res) => {
