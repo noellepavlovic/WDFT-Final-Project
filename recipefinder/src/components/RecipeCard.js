@@ -5,7 +5,7 @@ class RecipeCard extends Component {
     
     render() {
         return (
-            <div className="col s2">
+            <div className="col m2 s6">
                 <div className="card">
                     <div className="card-image">
                         <img src={this.props.imgSrc} alt="recipe" />
@@ -22,4 +22,4 @@ class RecipeCard extends Component {
     }
 }
 
-export default RecipeCard
+export default RecipeCard;

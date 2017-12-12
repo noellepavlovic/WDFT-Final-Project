@@ -1,14 +1,12 @@
 import React, { Component } from 'react';
 
 class Recipes extends Component {
-    
+
     componentWillMount() {
         this.props.getRecipe(this.props.match.params.recipeId)
-        this.forceUpdate();
     }
 
     inRecipebox = () => {
-        console.log("in inRecipe box")
         let recipebox = this.props.recipebox;
         let recipeid = this.props.match.params.recipeId;
 
@@ -21,7 +19,7 @@ class Recipes extends Component {
 
     render() {
         if (!this.props.recipe.data) {
-            return(<div></div>);
+            return (<div></div>);
         }
         return (
             <div className="detailCard">

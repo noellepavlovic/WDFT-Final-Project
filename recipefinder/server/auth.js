@@ -5,12 +5,10 @@ var passport = require('passport');
 var GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
 
 passport.serializeUser((user, done) => {
-	// done(null, user.id);
 	done(null, user);
 });
 
 passport.deserializeUser((obj, done) => {
-	// Users.findById(obj, done);
 	done(null, obj);
 });
 

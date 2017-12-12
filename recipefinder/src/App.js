@@ -107,12 +107,12 @@ class App extends Component {
 	getRecipebox = () => {
 		axios.get('http://localhost:8080/recipebox')
 			.then((response) => {
-				console.log(response.data)
 				let __recipebox = response.data
 				this.setState({
 					recipebox: __recipebox
 				})
 				this.props.history.push('/recipebox');
+				swal(response.data.error)
 			})
 	}
 
@@ -127,25 +127,23 @@ class App extends Component {
 	}
 	
 	render() {
-		console.log(this.state.user)
-		console.log(this.state.recipebox)
 		return (
 			<div className="container">
 				<Header />
-				<Navbar user={this.state.user} logout={() => this.logout()} getRecipebox={() => this.getRecipebox()}/>
+				<Navbar user={this.state.user} logout={() => this.logout()} getRecipebox={() => this.getRecipebox()} />
 				<Search search={(search) => this.search(search)} />
 				<div className="row fullLength">
 					<div className="col s12 main z-depth-2">
 						<Switch>
 							<Route exact path="/" render={() => <Recipes recipes={this.state.recipes} />} />
 							<Route exact path="/recipebox" render={() => <Recipes recipes={this.state.recipebox} />} />
-							<Route path="/:recipeId" render={(props) => <RecipeDetails user={this.state.user} recipe={this.state.recipe} recipebox={this.state.recipebox} 
+							<Route path="/:recipeId" render={(props) => <RecipeDetails user={this.state.user} recipe={this.state.recipe} recipebox={this.state.recipebox}
 								removeRecipe={(recipeid) => this.removeRecipe(recipeid)} saveRecipe={() => this.saveRecipe()} getRecipe={(recipeId) => this.getRecipe(recipeId)} {...props} />} />
 						</Switch>
 					</div>
 				</div>
 			</div>
-		);
+		)
 	}
 }
 

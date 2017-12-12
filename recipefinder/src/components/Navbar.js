@@ -10,8 +10,9 @@ class Navbar extends Component {
                         <a href="/" className="brand-logo">Home</a>
                         <ul id="nav-mobile" className="right hide-on-med-and-down">
                             {this.props.user
-                                ? <span><li className="active"><a onClick={() => this.props.getRecipebox()}>Recipe Box</a></li><li><a onClick={() => this.props.logout()}>Logout</a></li></span>
-                                : <li className="active"><a href="http://localhost:8080/auth/google">Login</a></li>}
+                                ? <span><li><a onClick={() => this.props.getRecipebox()}>Recipe Box</a>
+                                    </li><li><a onClick={() => this.props.logout()}>Logout</a></li></span>
+                                : <li><a href="http://localhost:8080/auth/google">Login</a></li>}
                         </ul>
                     </div>
                 </nav>

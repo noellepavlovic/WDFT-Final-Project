@@ -14,11 +14,6 @@
   margin-bottom: 0;
 }
 
-.main,
-.sidebar {
-  min-height: 100%;
-}
-
 .fullLength {
   min-height: 100%;
 }
@@ -49,10 +44,10 @@ input[type="text"]:not(.browser-default){
 }
 
 .main {
-  background-color: rgb(224, 221, 221);
+  background-color: rgb(231, 230, 230);
   padding-top: 10px;
   padding-left: 20px;
-  min-height: 100%;
+  min-height: 55vh;
 }
 
 .nav-wrapper {
@@ -64,10 +59,7 @@ input[type="text"]:not(.browser-default){
 
 img {
   border-radius: 5px;
-}
-
-.footer {
-  background-color: grey;
+  max-width: 100%;
 }
 
 .recipe {

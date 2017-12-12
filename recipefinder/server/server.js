@@ -67,6 +67,11 @@ app.get('/', (req, res) => {
 		.then(response => {
 			res.send(response.data)
 		})
+		.catch(err => {
+			console.log(err);
+			res.status(400)
+				.json({ err });
+		})
 })
 
 app.post('/search', (req, res) => {
@@ -86,6 +91,11 @@ app.post('/search', (req, res) => {
 				res.send(response.data)
 			}
 		})
+		.catch(err => {
+			console.log(err);
+			res.status(400)
+				.json({ err });
+		})
 })
 
 app.get('/getRecipe/:recipeid', (req, res) => {
@@ -97,6 +107,11 @@ app.get('/getRecipe/:recipeid', (req, res) => {
 	})
 		.then(response => {
 			res.send(response.data)
+		})
+		.catch(err => {
+			console.log(err);
+			res.status(400)
+				.json({ err });
 		})
 })
 
@@ -126,7 +141,12 @@ app.get('/recipebox', ensureAuthenticated, (req, res) => {
 						});
 				}
 				);
-		});
+		})
+		.catch(err => {
+			console.log(err);
+			res.status(400)
+				.json({ err });
+		})
 });
 
 app.post('/recipe', ensureAuthenticated, (req, res) => {
@@ -190,6 +210,11 @@ app.post('/recipe', ensureAuthenticated, (req, res) => {
 					}
 				})
 		})
+		.catch(err => {
+			console.log(err);
+			res.status(400)
+				.json({ err });
+		})
 })
 
 app.delete('/delete/:recipeid', ensureAuthenticated, (req, res) => {
@@ -210,6 +235,11 @@ app.delete('/delete/:recipeid', ensureAuthenticated, (req, res) => {
 						.json({ err });
 				})
 		})
+		.catch(err => {
+			console.log(err);
+			res.status(400)
+				.json({ err });
+		})
 })
 
 app.listen(8080, () => {
@@ -220,6 +250,5 @@ function ensureAuthenticated(req, res, next) {
 	if (req.isAuthenticated()) {
 		return next();
 	}
-
 	res.send(401).end();
 }
