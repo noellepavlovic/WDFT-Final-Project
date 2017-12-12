@@ -12,7 +12,7 @@ const auth = require('./auth');
 const User = require('./db/models/Users');
 const Recipe = require('./db/models/Recipes');
 const Recipebox = require('./db/models/Recipeboxes');
-const Recipe_Recipebox = require ('./db/models/Recipes_Recipeboxes')
+const Recipe_Recipebox = require('./db/models/Recipes_Recipeboxes')
 
 app.use(express.static(__dirname + '/public'));
 app.use(bodyParser());
@@ -25,14 +25,14 @@ app.use(session({
 
 app.use(auth.passport.initialize());
 app.use(auth.passport.session());
- 
+
 app.use((req, res, next) => {
 	res.header("Access-Control-Allow-Origin", "http://localhost:3000");
-    res.header("Access-Control-Allow-Credentials", true);
+	res.header("Access-Control-Allow-Credentials", true);
 	res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-	
-    next();
-  });
+	res.header("Access-Control-Allow-Methods", "GET, POST, OPTIONS, PUT, DELETE");
+	next();
+});
 
 app.get('/auth/google', auth.passport.authenticate('google', { scope: ['https://www.googleapis.com/auth/plus.login', 'email'] }));
 
@@ -53,8 +53,7 @@ app.get('/logout', (req, res) => {
 });
 
 app.get('/account', ensureAuthenticated, (req, res) => {
-	
-	res.send(req.user)	
+	res.send(req.user)
 })
 
 app.get('/', (req, res) => {
@@ -64,7 +63,6 @@ app.get('/', (req, res) => {
 			_app_key: '5ad566c9fd9d2d9a18d195bbb75f903e',
 			maxResult: '30'
 		}
-
 	})
 		.then(response => {
 			res.send(response.data)
@@ -74,23 +72,22 @@ app.get('/', (req, res) => {
 app.post('/search', (req, res) => {
 	let search = req.body.search
 	axios.get('http://api.yummly.com/v1/api/recipes', {
-        params: {
-            _app_id: '56782cdc',
+		params: {
+			_app_id: '56782cdc',
 			_app_key: '5ad566c9fd9d2d9a18d195bbb75f903e',
 			q: search,
 			maxResult: '30'
 		}
 	})
-	.then(response=> {	
-		if (response.data.matches.length === 0) {
-			res.send({message: "Your search returned no results"})
-		} else {
-		res.send(response.data)
-		}
-	}) 
-	
+		.then(response => {
+			if (response.data.matches.length === 0) {
+				res.send({ message: "Your search returned no results" })
+			} else {
+				res.send(response.data)
+			}
+		})
 })
-	  
+
 app.get('/getRecipe/:recipeid', (req, res) => {
 	axios.get(`http://api.yummly.com/v1/api/recipe/${req.params.recipeid}`, {
 		params: {
@@ -98,13 +95,13 @@ app.get('/getRecipe/:recipeid', (req, res) => {
 			_app_key: '5ad566c9fd9d2d9a18d195bbb75f903e'
 		}
 	})
-	.then(response=> {
-		res.send(response.data)
-		}) 
-	})
+		.then(response => {
+			res.send(response.data)
+		})
+})
 
 app.get('/recipebox', ensureAuthenticated, (req, res) => {
-	
+
 	Recipebox.where({ 'user_id': req.user.id })
 		.fetch()
 		.then(recipebox => {
@@ -132,8 +129,6 @@ app.get('/recipebox', ensureAuthenticated, (req, res) => {
 		});
 });
 
-
-
 app.post('/recipe', ensureAuthenticated, (req, res) => {
 	let userid = req.user.id;
 	let recipeid = req.body.recipe.data.id;
@@ -152,7 +147,6 @@ app.post('/recipe', ensureAuthenticated, (req, res) => {
 					saverecipe = recipe
 
 					if (!saverecipe) {
-
 						const newRecipe = new Recipe({
 							id: req.body.recipe.data.id,
 							recipeName: req.body.recipe.data.name,
@@ -167,19 +161,19 @@ app.post('/recipe', ensureAuthenticated, (req, res) => {
 								recipe_id: saverecipe.id,
 								recipebox_id: recipeboxid
 							})
-				
+
 							newRecipe_Recipebox.save(null, { method: 'insert' })
-							res.send({message:"Recipe saved to recipe box!"})
+							res.send({ message: "Recipe saved to recipe box!" })
 						})
 					} else {
-					
+
 						Recipe_Recipebox.where({ 'recipe_id': saverecipe.id })
 							.where({ 'recipebox_id': recipeboxid })
 							.fetch()
 							.then(recipe_recipebox => {
 
 								found = recipe_recipebox
-								
+
 								if (!found) {
 									const newRecipe_Recipebox = new Recipe_Recipebox({
 										recipe_id: saverecipe.id,
@@ -187,10 +181,10 @@ app.post('/recipe', ensureAuthenticated, (req, res) => {
 									})
 
 									newRecipe_Recipebox.save(null, { method: 'insert' })
-									res.send({message:"Recipe saved to your recipe box!"})
+									res.send({ message: "Recipe saved to your recipe box!" })
 
 								} else {
-									res.send({message:"Recipe is already in your recipe box"})
+									res.send({ message: "Recipe is already in your recipe box" })
 								}
 							})
 					}
@@ -198,6 +192,25 @@ app.post('/recipe', ensureAuthenticated, (req, res) => {
 		})
 })
 
+app.delete('/delete/:recipeid', ensureAuthenticated, (req, res) => {
+	Recipebox.where({ 'user_id': req.user.id })
+		.fetch()
+		.then(recipebox => {
+			recipeboxid = recipebox.id
+
+			Recipe_Recipebox.where({ 'recipe_id': req.params.recipeid })
+				.where({ 'recipebox_id': recipeboxid })
+				.destroy()
+				.then(deleted => {
+					res.send({ message: "Recipe has been deleted from your recipe box" })
+				})
+				.catch(err => {
+					console.log(err);
+					res.status(400)
+						.json({ err });
+				})
+		})
+})
 
 app.listen(8080, () => {
 	console.log('Listening on port 8080');
