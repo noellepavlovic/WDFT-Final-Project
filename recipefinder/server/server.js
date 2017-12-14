@@ -57,8 +57,8 @@ app.get('/account', ensureAuthenticated, (req, res) => {
 app.get('/', (req, res) => {
     axios.get('http://api.yummly.com/v1/api/recipes', {
         params: {
-            _app_id: '56782cdc',
-            _app_key: '5ad566c9fd9d2d9a18d195bbb75f903e',
+            _app_id: process.env.API_USER,
+            _app_key: process.env.API_KEY,
             maxResult: '60'
         }
     })
@@ -76,8 +76,8 @@ app.post('/search', (req, res) => {
     let search = req.body.search;
     axios.get('http://api.yummly.com/v1/api/recipes', {
         params: {
-            _app_id: '56782cdc',
-            _app_key: '5ad566c9fd9d2d9a18d195bbb75f903e',
+            _app_id: process.env.API_USER,
+            _app_key: process.env.API_KEY,
             q: search,
             maxResult: '60'
         }
@@ -100,8 +100,8 @@ app.post('/search', (req, res) => {
 app.get('/getRecipe/:recipeid', (req, res) => {
     axios.get(`http://api.yummly.com/v1/api/recipe/${req.params.recipeid}`, {
         params: {
-            _app_id: '56782cdc',
-            _app_key: '5ad566c9fd9d2d9a18d195bbb75f903e'
+            _app_id: process.env.API_USER,
+            _app_key: process.env.API_KEY
         }
     })
         .then(response => {
