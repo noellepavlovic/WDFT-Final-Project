@@ -1,3 +1,6 @@
+body {
+    font-size: calc(0.38vw + 0.38vh + 0.38vmin);
+}
 .header {
     background-color: rgb(255, 255, 255);
     color: rgb(10, 2, 2);
@@ -35,7 +38,7 @@ input[type="text"]:not(.browser-default) {
 }
 
 .card .card-content {
-    padding: 16px;
+    padding: 22px;
 }
 
 .detailCard {

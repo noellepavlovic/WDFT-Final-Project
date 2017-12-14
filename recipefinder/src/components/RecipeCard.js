@@ -5,7 +5,7 @@ class RecipeCard extends Component {
     
     render() {
         return (
-            <div className="col m2 s6">
+            <div className="col l2 m3 s6">
                 <div className="card">
                     <div className="card-image">
                         <img src={this.props.imgSrc} alt="recipe" />
