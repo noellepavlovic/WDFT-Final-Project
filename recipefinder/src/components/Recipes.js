@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import RecipeCard from './RecipeCard'
+import RecipeCard from './RecipeCard';
 
 class Recipes extends Component {
 

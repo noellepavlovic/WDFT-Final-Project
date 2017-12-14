@@ -5,8 +5,8 @@ const bookshelf = require('bookshelf')(knex);
 const User = bookshelf.Model.extend({
     tableName: 'users',
     recipeboxes: () => {
-        return hasMany(Recipeboxes)
+        return this.hasMany(Recipeboxes);
     }
-})
+});
 
 module.exports = User;

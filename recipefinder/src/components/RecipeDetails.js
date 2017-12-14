@@ -3,17 +3,20 @@ import React, { Component } from 'react';
 class Recipes extends Component {
 
     componentWillMount() {
-        this.props.getRecipe(this.props.match.params.recipeId)
+        this.props.getRecipe(this.props.match.params.recipeId);
     }
 
     inRecipebox = () => {
         let recipebox = this.props.recipebox;
         let recipeid = this.props.match.params.recipeId;
+        let found = false;
 
-        let recipes = recipebox.map((recipe) => {
-            return recipe.id;
-        })
-        let found = recipes.includes(recipeid);
+        if (!recipebox.error){ 
+            let recipes = recipebox.map((recipe) => {
+                return recipe.id;
+                })
+            found = recipes.includes(recipeid);
+            }
         return found;
     }
 
@@ -53,7 +56,7 @@ class Recipes extends Component {
                 </div>
                 <div className="col s4 center-align recipe">
                     {(this.props.recipe.data.images)
-                        ? <div><img className="detImg" src={this.props.recipe.data.images['0'].hostedLargeUrl} alt="food item" /></div>
+                        ? <div className="center-align"><img className="detImg" src={this.props.recipe.data.images['0'].hostedLargeUrl} alt="food item" /></div>
                         : null}
                     <div className="row">
                         {this.props.recipe.data.source.sourceRecipeUrl

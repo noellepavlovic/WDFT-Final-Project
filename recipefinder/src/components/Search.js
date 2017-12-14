@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 class Search extends Component {
     handleSubmit = (e) => {
             e.preventDefault();
-            this.props.search(e.target.search.value)
+            this.props.search(e.target.search.value);
             e.target.search.value = ''; 
         } 
 

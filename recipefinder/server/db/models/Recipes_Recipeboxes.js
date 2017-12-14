@@ -4,6 +4,6 @@ const bookshelf = require('bookshelf')(knex);
 
 const Recipe_Recipebox = bookshelf.Model.extend({
     tableName: 'recipes_recipeboxes'
-})
+});
 
 module.exports = Recipe_Recipebox;
