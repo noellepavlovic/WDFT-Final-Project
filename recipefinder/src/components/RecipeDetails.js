@@ -21,6 +21,7 @@ class Recipes extends Component {
     }
 
     render() {
+        
         if (!this.props.recipe.data) {
             return (<div></div>);
         }
