@@ -85,8 +85,7 @@ app.post('/search', (req, res) => {
         .then(response => {
             
             if (response.data.matches.length === 0) {
-                res.send({ message: "Your search returned no results" })
-                
+                res.send({ message: "Your search returned no results" })    
             } else {
                 res.send(response.data)
             }
@@ -135,7 +134,6 @@ app.get('/recipebox', ensureAuthenticated, (req, res) => {
                             
                             if (recipes.length > 0) {
                                 res.send(recipes);
-
                             } else {
                                 res.send({ error: "Your recipebox is empty!" })
                             }
@@ -186,9 +184,7 @@ app.post('/recipe', ensureAuthenticated, (req, res) => {
                             newRecipe_Recipebox.save(null, { method: 'insert' })
                             res.send({ message: "Recipe saved to recipe box!" })
                         })
-
                     } else {
-
                         Recipe_Recipebox.where({ 'recipe_id': saverecipe.id })
                             .where({ 'recipebox_id': recipeboxid })
                             .fetch()

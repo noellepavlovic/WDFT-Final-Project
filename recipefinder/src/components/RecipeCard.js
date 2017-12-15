@@ -13,7 +13,7 @@ class RecipeCard extends Component {
                     <Link to={`/${this.props.id}`}>
                         <div className="card-content">
                             <div className="center-align"><b>{this.props.title}</b></div>
-                            <div className="center-align"><p>{this.props.recSrc}</p></div>
+                            {/* <div className="center-align"><p>{this.props.recSrc}</p></div> */}
                         </div>
                     </Link>
                 </div>

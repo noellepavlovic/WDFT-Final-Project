@@ -51,6 +51,10 @@ class Recipes extends Component {
                             ? <span> <b>Calories:</b>  {this.props.recipe.data.nutritionEstimates["0"].value}</span>
                             : null}
                     </div>
+                    <div>{this.props.recipe.data.source.sourceDisplayName
+                            ? <span><b>Source:</b> {this.props.recipe.data.source.sourceDisplayName}</span>
+                            : null}
+                    </div>
                     {(this.props.recipe.data.ingredientLines.length > 0)
                         ? this.props.recipe.data.ingredientLines.map((item, i) => <ul> {item} </ul>)
                         : null}

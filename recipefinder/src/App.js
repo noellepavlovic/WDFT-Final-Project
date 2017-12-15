@@ -120,6 +120,7 @@ class App extends Component {
                 this.setState({
                     user: false
                 })
+                this.props.history.push('/');
                 swal("You successfully logged out!");
             })
     }
