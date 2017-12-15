@@ -34,7 +34,7 @@ app.use((req, res, next) => {
     next();
 });
 
-app.get('/auth/google', auth.passport.authenticate('google', { scope: ['https://www.googleapis.com/auth/plus.login', 'email'] }));
+app.get('/auth/google', auth.passport.authenticate('google', { prompt : "select_account", scope: ['https://www.googleapis.com/auth/plus.login', 'email'] }));
 
 app.get('/auth/google/callback',
     auth.passport.authenticate('google', {

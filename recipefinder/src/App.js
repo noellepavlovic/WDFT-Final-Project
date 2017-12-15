@@ -46,7 +46,6 @@ class App extends Component {
                 let recipeId = window.location.href;
                 this.getRecipe(recipeId.substring(1));
         }
-        
     }
 
     verifyAuthenticated = () => {
@@ -133,7 +132,7 @@ class App extends Component {
                 this.setState({
                     user: false
                 })
-                document.location.href = 'https://www.google.com/accounts/Logout?continue=https://appengine.google.com/_ah/logout?continue=http://localhost:3000';
+                swal("You have been successfully logged out")
             })
     }
     
