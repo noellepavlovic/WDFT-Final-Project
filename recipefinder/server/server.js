@@ -46,8 +46,11 @@ app.get('/auth/google/callback',
     });
 
 app.get('/logout', (req, res) => {
-    req.logout();
-    res.send();
+    req.session.destroy(function(e){
+        req.logout();
+        res.send();
+        // res.redirect('');
+    });
 });
 
 app.get('/account', ensureAuthenticated, (req, res) => {

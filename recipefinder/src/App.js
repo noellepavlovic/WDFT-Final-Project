@@ -120,8 +120,7 @@ class App extends Component {
                 this.setState({
                     user: false
                 })
-                this.props.history.push('/');
-                swal("You successfully logged out!");
+                document.location.href = 'https://www.google.com/accounts/Logout?continue=https://appengine.google.com/_ah/logout?continue=http://localhost:3000';
             })
     }
     
