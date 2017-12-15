@@ -26,19 +26,32 @@ class App extends Component {
 
     componentDidMount() {
         this.verifyAuthenticated();
-        this.loadRecipebox();
 
-        axios.get('http://localhost:8080/')
-            .then((response) => {
-                let __recipes = response.data.matches;
-                this.setState({
-                    recipes: __recipes
-                })
-            })
+        switch (window.location.pathname) {
+            case '/recipebox':
+                this.loadRecipebox();
+                break;
+            case '/':
+            case '':
+                axios.get('http://localhost:8080/')
+                .then((response) => {
+                    let __recipes = response.data.matches;
+                    this.setState({
+                        recipes: __recipes
+                    })
+                });
+                break;
+
+            default:
+                let recipeId = window.location.href;
+                this.getRecipe(recipeId.substring(1));
+        }
+        
     }
 
     verifyAuthenticated = () => {
-        axios.get('http://localhost:8080/account')
+        let now = Date.now().toString();
+        axios.get('http://localhost:8080/account?' + now)
             .then((response) => {
                 if (response.status !== 401) {
                     this.setState({
@@ -55,7 +68,7 @@ class App extends Component {
                 this.setState({
                     recipebox: __recipebox
                 })
-                this.props.history.push('/');
+                this.props.history.push('/recipebox');
             })
     }
 
@@ -71,7 +84,7 @@ class App extends Component {
                     })
                 }
             })
-        this.props.history.push('/');
+        this.props.history.push('/search');
     }
 
     getRecipe = (recipeId) => {

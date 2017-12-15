@@ -49,7 +49,6 @@ app.get('/logout', (req, res) => {
     req.session.destroy(function(e){
         req.logout();
         res.send();
-        // res.redirect('');
     });
 });
 

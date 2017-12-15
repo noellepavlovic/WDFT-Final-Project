@@ -66,7 +66,7 @@ class Recipes extends Component {
                     <div className="row">
                         {this.props.recipe.data.source.sourceRecipeUrl
                             ? <div className="col s12 center-align">
-                                <a href={this.props.recipe.data.source.sourceRecipeUrl} className="waves-effect waves-light btn">Click here for full recipe</a>
+                                <a href={this.props.recipe.data.source.sourceRecipeUrl} className="waves-effect waves-light btn">View full recipe</a>
                             </div>
                             : null}
                     </div>
