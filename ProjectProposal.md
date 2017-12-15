@@ -1,5 +1,4 @@
-# Project Proposal: Recipe Helper
-
+# Project Proposal: What's for Dinner?
 
 ## Project Goal
 
